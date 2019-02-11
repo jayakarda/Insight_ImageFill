@@ -1,92 +1,126 @@
-# keras-yolo3
+# Insight_Project_Framework
+Framework for machine learning projects at Insight Data Science.
 
-## Introduction
+## Motivation for this project format:
+- **Insight_Project_Framework** : Put all source code for production within structured directory
+- **tests** : Put all source code for testing in an easy to find location
+- **configs** : Enable modification of all preset variables within single directory (consisting of one or many config files for separate tasks)
+- **data** : Include example a small amount of data in the Github repository so tests can be run to validate installation
+- **build** : Include scripts that automate building of a standalone environment
+- **static** : Any images or content to include in the README or web framework if part of the pipeline
 
-A keras implementation of YOLOv3 (Tensorflow backend) for raccoon detection (ref: [qqwweee/keras-yolo3](https://github.com/qqwweee/keras-yolo3))
-
-
-## Raccoon dataset
-
-Raccoon dataset is avaiable here: [Raccoon dataset](https://github.com/bing0037/Raccoon_dataset) (modified from [experiencor/raccoon_dataset](https://github.com/experiencor/raccoon_dataset))
-
-![Raccoon](pictures/raccoon-28.jpg)
-
-## How to use:
-
-### 1) Get the model
-
-Step 1: Download the project:
+## Setup
+Clone repository and update python path
 ```
-git clone https://github.com/bing0037/keras-yolo3.git
+repo_name=Insight_Project_Framework # URL of your new repository
+username=mrubash1 # Username for your personal github account
+git clone https://github.com/$username/$repo_name
+cd $repo_name
+echo "export $repo_name=${PWD}" >> ~/.bash_profile
+echo "export PYTHONPATH=$repo_name/src:${PYTHONPATH}" >> ~/.bash_profile
+source ~/.bash_profile
 ```
-
-Step 2: Download YOLOv3 weights from [YOLO website](http://pjreddie.com/darknet/yolo/) or [yolov3.weights](https://drive.google.com/uc?id=1owAyOwfpwxpbs0BLWPkwT0srRUTpFHIn&export=download).
-
-Step 3: Convert the Darknet YOLO model to a Keras model 
+Create new development branch and switch onto it
 ```
-python convert.py yolov3.cfg yolov3.weights model_data/yolo.h5	# to get yolo.h5(model)
-```
-
-**OR** download the model [yolo.h5](https://drive.google.com/uc?export=download&confirm=8R0l&id=1Dd-uUhhXvosXiIIZM8tiXoZyENJxIY4u) to *model_data/* directory directly.
-
-### 2) Test the model on coco dataset(original yolo model is trained on coco dataset)
-Run YOLO detecion.
-```
-python yolo_video.py --model_path model_data/yolo.h5 --classes_path model_data/coco_classes.txt --image
+branch_name=dev-readme_requisites-20180905 # Name of development branch, of the form 'dev-feature_name-date_of_creation'}}
+git checkout -b $branch_name
 ```
 
-![Raccoon](pictures/coco_1.png)
-
-### 3) Retrain the model for raccoon detection:
-Step 1: Download Raccoon dataset to root directory
+## Initial Commit
+Lets start with a blank slate: remove `.git` and re initialize the repo
 ```
-git clone https://github.com/bing0037/Raccoon_dataset.git
+cd $repo_name
+rm -rf .git   
+git init   
+git status
+```  
+You'll see a list of file, these are files that git doesn't recognize. At this point, feel free to change the directory names to match your project. i.e. change the parent directory Insight_Project_Framework and the project directory Insight_Project_Framework:
+Now commit these:
 ```
-Step 2: Parse annotation:
-```
-python raccoon_annotation.py
-```
-Step 3: Download YOLOv3 weights from [yolo_weights](https://drive.google.com/uc?export=download&confirm=-b_7&id=1HlydiovCtnUJabQvZIbx77v6sE4OXrac) to *model_data/* directory
-
-Step 4: Retrain the model(use yolo.h5 as the pretrained model) 
-```
-python train.py -a Raccoon_dataset/raccoon_train_data.txt -c Raccoon_dataset/raccoon_classes.txt -o model_data/raccoon_derived_model.h5
+git add .
+git commit -m "Initial commit"
+git push origin $branch_name
 ```
 
-**OR** download the trained model [raccoon_derived_model.h5](https://drive.google.com/uc?export=download&confirm=6pCi&id=1mdSiioui7H8pskBCMrE08jo-0saIf-y-) to *model_data/* directory directly.
+## Requisites
 
-Step 5: Run the model
-```
-python yolo_video.py --image
-```
+- List all packages and software needed to build the environment
+- This could include cloud command line tools (i.e. gsutil), package managers (i.e. conda), etc.
 
-### 4) pedestrian detection: training dataset: [Robust Multi-Person Tracking from Mobile Platforms](https://data.vision.ee.ethz.ch/cvl/aess/dataset/)
+#### Dependencies
 
-More training data is needed to improve the accuracy!
+- [Streamlit](streamlit.io)
 
-Step1: training or download the model directly [pedestrian_detection_model.h5](https://drive.google.com/file/d/1scu2PQeEnTvvIIZw9IYZHaVLFMhnbHqm/view?usp=sharing):
-```
-python train.py -a test_data/training_data/annotation.txt -c test_data/training_data/pedestrian_classes.txt -o model_data/pedestrian_detection_model.h5
-```
-Step2: running:
-```
-python yolo_video.py --model_path model_data/pedestrian_detection_model.h5 --classes_path test_data/training_data/pedestrian_classes.txt
+#### Installation
+To install the package above, pleae run:
+```shell
+pip install -r requiremnts
 ```
 
-Pedestrian detection result: [Yotube](https://youtu.be/yxeetjk22K0)
+## Build Environment
+- Include instructions of how to launch scripts in the build subfolder
+- Build scripts can include shell scripts or python setup.py files
+- The purpose of these scripts is to build a standalone environment, for running the code in this repository
+- The environment can be for local use, or for use in a cloud environment
+- If using for a cloud environment, commands could include CLI tools from a cloud provider (i.e. gsutil from Google Cloud Platform)
+```
+# Example
 
-## Raccoon detection result
+# Step 1
+# Step 2
+```
 
-![Raccoon](pictures/raccoon_detection_1.png)
+## Configs
+- We recommond using either .yaml or .txt for your config files, not .json
+- **DO NOT STORE CREDENTIALS IN THE CONFIG DIRECTORY!!**
+- If credentials are needed, use environment variables or HashiCorp's [Vault](https://www.vaultproject.io/)
 
-![Raccoon](pictures/raccoon_detection_2.png)
 
+## Test
+- Include instructions for how to run all tests after the software is installed
+```
+# Example
 
-## Some issues
+# Step 1
+# Step 2
+```
 
-1. The test environment is
-    - Python 3.5.5
-    - Keras 2.2.0
-    - tensorflow 1.6.0
+## Run Inference
+- Include instructions on how to run inference
+- i.e. image classification on a single image for a CNN deep learning project
+```
+# Example
 
-2. The model for raccoon detection was trained using ONLY CPU, so the accuracy is not very high. If you want to achieve a better performance, you can use GPUs for training.
+# Step 1
+# Step 2
+```
+
+## Build Model
+- Include instructions of how to build the model
+- This can be done either locally or on the cloud
+```
+# Example
+
+# Step 1
+# Step 2
+```
+
+## Serve Model
+- Include instructions of how to set up a REST or RPC endpoint
+- This is for running remote inference via a custom model
+```
+# Example
+
+# Step 1
+# Step 2
+```
+
+## Analysis
+- Include some form of EDA (exploratory data analysis)
+- And/or include benchmarking of the model and results
+```
+# Example
+
+# Step 1
+# Step 2
+```

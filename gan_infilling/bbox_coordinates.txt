@@ -1,0 +1,1 @@
+/home/ubuntu/ImageFill/yolo_object_detection/test_data/test_images/nike_195.JPEG,158, 280, 195, 359
