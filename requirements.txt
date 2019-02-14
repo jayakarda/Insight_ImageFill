@@ -1,4 +1,10 @@
 # To install these Python dependencies, please type:
 # pip install -r requirements.txt
-
+tensorflow
+pandas
+numpy
+keras
+opencv-python
+neuralgym
+pillow
 streamlit
