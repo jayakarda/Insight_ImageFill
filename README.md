@@ -50,7 +50,7 @@ It can be used for Brand Management in images or videos by some of the major spo
       20190205063252254845_ip-172-31-46-187_apparel_NORMAL_wgan_gp_logs
       Run python train.py.
     
-5.  ***Test Image Infilling****
+5.  ***Test Image Infilling***
  
     * Generate masks using the following script:
       python process_yolo_output.py
